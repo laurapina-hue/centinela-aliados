@@ -396,6 +396,25 @@
   }
 
   /* ================= CONFIGURACIÓN ================= */
+  function estadoIA(html, tipo = "") {
+    const d = $("#cfg-estado-ia");
+    d.innerHTML = html;
+    d.className = "aviso " + (tipo === "error" ? "" : "info");
+    d.classList.remove("oculto");
+  }
+  function llenarModelos(lista, seleccionado = cfg.modelo) {
+    const ms = [...new Set([seleccionado, ...lista].filter(Boolean))];
+    $("#cfg-modelo-sel").innerHTML = ms.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join("");
+    $("#cfg-modelo-sel").value = seleccionado;
+    $("#cfg-modelo").value = seleccionado;
+  }
+  /** Prefiere un modelo "flash" estable (no preview ni experimental), el de versión más alta */
+  function mejorModelo(ms) {
+    const ver = m => parseFloat((m.match(/gemini-(\d+(\.\d+)?)/) || [])[1] || 0);
+    const puntaje = m => (/flash/.test(m) ? 100 : 0) - (/lite/.test(m) ? 10 : 0) - (/preview|exp|latest|\d{3,}/.test(m) ? 50 : 0) + ver(m);
+    return [...ms].sort((a, b) => puntaje(b) - puntaje(a))[0];
+  }
+
   function vConfig() {
     $("#cfg-key").value = cfg.apiKey || "";
     $("#cfg-recordar").checked = cfg.recordar;
@@ -405,7 +424,7 @@
     $("#cfg-url-inc").value = cfg.urlIncumplimientos || "";
     $("#cfg-refresco").value = String(cfg.refrescoMin || 0);
     $("#cfg-tema").value = cfg.tema || "";
-    if (!$("#lista-modelos").children.length) $("#lista-modelos").innerHTML = CONFIG_DEFECTO.modelosSugeridos.map(m => `<option value="${m}">`).join("");
+    llenarModelos(Almacen.get("modelosDetectados", null) || CONFIG_DEFECTO.modelosSugeridos);
     $("#cfg-origen").textContent = "Origen actual → " + Object.entries(origen).map(([k, v]) => `${k}: ${v}`).join(" · ");
     $("#cfg-contexto").innerHTML = `<table><tr><th>Archivo</th><th class="num">Caracteres</th><th>Pendientes [COMPLETAR]</th></tr>${Datos.ARCHIVOS_CONTEXTO.map(f => {
       const t = contexto[f] || ""; const p = (t.match(/\[COMPLETAR/g) || []).length;
@@ -471,22 +490,34 @@
 
     $("#cfg-guardar").addEventListener("click", () => { leerFormIA(); guardarConfig(cfg); actualizarEstadoIA(); toast("Configuración guardada"); });
     $("#cfg-borrar").addEventListener("click", () => { cfg.apiKey = ""; cfg.recordar = false; guardarConfig(cfg); vConfig(); actualizarEstadoIA(); toast("API key eliminada de este navegador"); });
+    $("#cfg-modelo-sel").addEventListener("change", () => { $("#cfg-modelo").value = $("#cfg-modelo-sel").value; });
     $("#cfg-probar").addEventListener("click", async () => {
       leerFormIA();
+      if (!cfg.apiKey) { estadoIA("Primero pega tu API key.", "error"); return; }
+      const b = $("#cfg-probar"); b.disabled = true;
+      estadoIA(`Probando conexión con ${cfg.modelo}…`);
       try {
-        toast("Probando conexión…");
-        const r = await Gemini.generar({ apiKey: cfg.apiKey, modelo: cfg.modelo, sistema: "Responde solo con la palabra: listo", mensajes: [{ rol: "yo", texto: "Prueba" }], maxTokens: 20 });
+        await Gemini.generar({ apiKey: cfg.apiKey, modelo: cfg.modelo, sistema: "Responde solo con la palabra: listo", mensajes: [{ rol: "yo", texto: "Prueba" }], maxTokens: 1024 });
         guardarConfig(cfg); actualizarEstadoIA();
-        toast(`Conexión correcta con ${cfg.modelo} (${r.texto.trim().slice(0, 20)})`);
-      } catch (e) { toast(e.message, 6000); }
+        estadoIA(`✅ Conexión correcta con ${cfg.modelo}. La configuración quedó guardada; ya puedes usar el Agente IA.`, "ok");
+      } catch (e) { estadoIA("❌ " + e.message, "error"); }
+      finally { b.disabled = false; }
     });
     $("#cfg-detectar").addEventListener("click", async () => {
       leerFormIA();
+      if (!cfg.apiKey) { estadoIA("Primero pega tu API key.", "error"); return; }
+      const b = $("#cfg-detectar"); b.disabled = true;
+      estadoIA("Consultando los modelos disponibles para tu clave…");
       try {
         const ms = await Gemini.listarModelos(cfg.apiKey);
-        $("#lista-modelos").innerHTML = ms.map(m => `<option value="${m}">`).join("");
-        toast(`${ms.length} modelos disponibles. Escribe o elige uno en el campo Modelo.`, 4000);
-      } catch (e) { toast(e.message, 6000); }
+        if (!ms.length) { estadoIA("Tu clave no devolvió modelos de texto. Revisa en Google AI Studio que la clave esté activa.", "error"); return; }
+        Almacen.set("modelosDetectados", ms);
+        const preferido = ms.includes(cfg.modelo) ? cfg.modelo : mejorModelo(ms);
+        llenarModelos(ms, preferido);
+        $("#cfg-modelo").value = preferido;
+        estadoIA(`Se encontraron ${ms.length} modelos. Quedó seleccionado <b>${esc(preferido)}</b>; puedes cambiarlo en la lista «Modelo». Ahora pulsa <b>Probar conexión</b>.`, "ok");
+      } catch (e) { estadoIA("❌ " + e.message, "error"); }
+      finally { b.disabled = false; }
     });
     $("#cfg-fuentes").addEventListener("click", async () => {
       const pares = [["#up-ind", "indicadores"], ["#up-inc", "incumplimientos"], ["#up-prov", "proveedores"], ["#up-metas", "metas"]];

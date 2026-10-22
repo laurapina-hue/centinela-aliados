@@ -173,10 +173,12 @@
             <label>API key de Gemini<input type="password" id="cfg-key" autocomplete="off" placeholder="AIza…"></label>
             <label><span><input type="checkbox" id="cfg-recordar"> Recordar en este navegador</span><small>Si no la marcas, la key se borra al cerrar la pestaña.</small></label>
             <div class="fila-form">
-              <label>Modelo<input type="text" id="cfg-modelo" list="lista-modelos"><datalist id="lista-modelos"></datalist></label>
+              <label>Modelo<select id="cfg-modelo-sel"></select><small>Pulsa «Detectar modelos» para ver los que tu clave tiene disponibles.</small></label>
               <label>Temperatura<input type="text" id="cfg-temp" inputmode="decimal"><small>0,0–1,0 · baja = más precisa</small></label>
             </div>
             <div class="fila-form" style="flex:0"><button class="btn primario" id="cfg-guardar">Guardar</button><button class="btn" id="cfg-probar">Probar conexión</button><button class="btn" id="cfg-detectar">Detectar modelos</button><button class="btn" id="cfg-borrar">Borrar key</button></div>
+            <div class="aviso info oculto" id="cfg-estado-ia" role="status"></div>
+            <input type="hidden" id="cfg-modelo">
             <div class="aviso"><b>Privacidad:</b> en la capa gratuita, Google puede usar el contenido enviado para mejorar sus productos. No envíes datos personales de asegurados; usa la capa de pago o datos anonimizados para información sensible.</div>
           </div>
         </div>

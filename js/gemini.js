@@ -7,7 +7,7 @@
 const Gemini = (() => {
   const BASE = "https://generativelanguage.googleapis.com/v1beta";
 
-  async function generar({ apiKey, modelo, sistema, mensajes, temperatura = 0.2, maxTokens = 4096 }) {
+  async function generar({ apiKey, modelo, sistema, mensajes, temperatura = 0.2, maxTokens = 8192 }) {
     if (!apiKey) throw new Error("Falta la API key de Gemini. Ingrésala en Configuración.");
     const cuerpo = {
       systemInstruction: { parts: [{ text: sistema }] },
@@ -29,7 +29,7 @@ const Gemini = (() => {
     const cand = j.candidates && j.candidates[0];
     if (!cand) throw new Error("Gemini no devolvió respuesta" + (j.promptFeedback ? ` (${j.promptFeedback.blockReason || "bloqueada"})` : "."));
     const texto = (cand.content?.parts || []).map(p => p.text || "").join("");
-    if (!texto) throw new Error("Respuesta vacía (motivo: " + (cand.finishReason || "desconocido") + ").");
+    if (!texto) throw new Error(cand.finishReason === "MAX_TOKENS" ? "El modelo agotó el límite de respuesta antes de contestar. Intenta de nuevo o elige un modelo «flash»." : "Respuesta vacía (motivo: " + (cand.finishReason || "desconocido") + ").");
     return { texto, uso: j.usageMetadata || null, fin: cand.finishReason };
   }
 
