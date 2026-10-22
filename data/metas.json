@@ -1,0 +1,150 @@
+{
+  "_nota": "Metas de EJEMPLO. Reemplazar por las metas oficiales de la compañía. 'meta' = verde; 'umbral' = límite del amarillo.",
+  "volumen_minimo": 15,
+  "indicadores": {
+    "oportunidad": {
+      "nombre": "Oportunidad de llegada",
+      "unidad": "%",
+      "sentido": "mayor",
+      "meta": 90,
+      "umbral": 85,
+      "peso": 25,
+      "decimales": 1
+    },
+    "tiempo_llegada": {
+      "nombre": "Tiempo promedio de llegada",
+      "unidad": "min",
+      "sentido": "menor",
+      "meta": 45,
+      "umbral": 55,
+      "peso": 10,
+      "decimales": 1
+    },
+    "satisfaccion": {
+      "nombre": "Satisfacción",
+      "unidad": "%",
+      "sentido": "mayor",
+      "meta": 96,
+      "umbral": 94,
+      "peso": 0,
+      "decimales": 1,
+      "alerta": false
+    },
+    "insatisfechos": {
+      "nombre": "Tasa de insatisfechos",
+      "unidad": "%",
+      "sentido": "menor",
+      "meta": 4,
+      "umbral": 6,
+      "peso": 15,
+      "decimales": 1
+    },
+    "reclamaciones": {
+      "nombre": "Reclamaciones x 1.000 servicios",
+      "unidad": "x1.000",
+      "sentido": "menor",
+      "meta": 5,
+      "umbral": 8,
+      "peso": 15,
+      "decimales": 1
+    },
+    "responsabilidad": {
+      "nombre": "Responsabilidad del aliado",
+      "unidad": "%",
+      "sentido": "menor",
+      "meta": 0.8,
+      "umbral": 1.5,
+      "peso": 10,
+      "decimales": 2
+    },
+    "cancelaciones": {
+      "nombre": "Cancelaciones atribuibles",
+      "unidad": "%",
+      "sentido": "menor",
+      "meta": 3,
+      "umbral": 5,
+      "peso": 5,
+      "decimales": 1
+    },
+    "rechazo": {
+      "nombre": "Rechazo de asignación",
+      "unidad": "%",
+      "sentido": "menor",
+      "meta": 6,
+      "umbral": 9,
+      "peso": 5,
+      "decimales": 1
+    },
+    "incumplimientos": {
+      "nombre": "Incumplimientos matriz x 100 serv.",
+      "unidad": "x100",
+      "sentido": "menor",
+      "meta": 1,
+      "umbral": 2,
+      "peso": 5,
+      "decimales": 2
+    }
+  },
+  "categorias": [
+    {
+      "nombre": "Sobresaliente",
+      "min": 90,
+      "color": "verde"
+    },
+    {
+      "nombre": "Satisfactorio",
+      "min": 75,
+      "color": "verde"
+    },
+    {
+      "nombre": "En observación",
+      "min": 55,
+      "color": "amarillo"
+    },
+    {
+      "nombre": "Crítico",
+      "min": 0,
+      "color": "rojo"
+    }
+  ],
+  "alertas": {
+    "racha_semanas_rojo": 3,
+    "deterioro_semanas": 3,
+    "atipico_sigmas": 2,
+    "historico_semanas": 8,
+    "historico_minimo": 4,
+    "variacion_volumen": 0.4,
+    "ventana_matriz_dias": 90
+  },
+  "escalamiento": [
+    {
+      "condicion": "1+ crítica o 6+ graves en 90 días",
+      "medida": "Propuesta de suspensión temporal (requiere Jurídico)",
+      "criticas": 1,
+      "graves": 6,
+      "leves": 999
+    },
+    {
+      "condicion": "8+ leves o 3+ graves en 90 días",
+      "medida": "Plan de mejora con compromisos y fechas",
+      "criticas": 999,
+      "graves": 3,
+      "leves": 8
+    },
+    {
+      "condicion": "3+ leves o 1+ grave en 90 días",
+      "medida": "Llamado de atención escrito",
+      "criticas": 999,
+      "graves": 1,
+      "leves": 3
+    },
+    {
+      "condicion": "1+ leve en 90 días",
+      "medida": "Llamado verbal (registro en bitácora)",
+      "criticas": 999,
+      "graves": 999,
+      "leves": 1
+    }
+  ],
+  "_nota_satisfaccion": "Satisfacción es el complemento de la tasa de insatisfechos: se muestra en el tablero pero no suma al IDA ni genera alertas (peso 0, alerta false) para no duplicar."
+}

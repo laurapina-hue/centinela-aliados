@@ -1,0 +1,163 @@
+{
+  "_nota": "DATOS FICTICIOS DE DEMOSTRACIÓN. Reemplazar por la base oficial.",
+  "proveedores": [
+    {
+      "nit": "900111001-1",
+      "razon_social": "Grúas Andinas Demo S.A.S.",
+      "servicio": "Grúa",
+      "ciudades": [
+        "Bogotá",
+        "Soacha"
+      ],
+      "frecuencia": "alta",
+      "region": "Centro",
+      "lider_regional": "Líder Regional Centro",
+      "correo_aliado": "contacto@grúas-demo.example",
+      "correo_lider": "lider.centro@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "4802cbb68182a53ce5bebdc6ba960bc4c136615a3d49ca77106502f2db40750e"
+    },
+    {
+      "nit": "900111002-2",
+      "razon_social": "Rescate Vial Express Demo S.A.S.",
+      "servicio": "Grúa",
+      "ciudades": [
+        "Medellín",
+        "Envigado"
+      ],
+      "frecuencia": "alta",
+      "region": "Antioquia",
+      "lider_regional": "Líder Regional Antioquia",
+      "correo_aliado": "contacto@rescate-demo.example",
+      "correo_lider": "lider.antioquia@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "394cd2492994302df4bb5306da1ee7ede0454bd6b44d4f3d8f14eaa0b6171d10"
+    },
+    {
+      "nit": "900111003-3",
+      "razon_social": "Taller Móvil Pacífico Demo S.A.S.",
+      "servicio": "Carro taller",
+      "ciudades": [
+        "Cali",
+        "Palmira"
+      ],
+      "frecuencia": "alta",
+      "region": "Occidente",
+      "lider_regional": "Líder Regional Occidente",
+      "correo_aliado": "contacto@taller-demo.example",
+      "correo_lider": "lider.occidente@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "d3087003870e23cadc35ef18cc027126cc1b58488605539072e58b9cdf87ff1b"
+    },
+    {
+      "nit": "900111004-4",
+      "razon_social": "Mecánica en Ruta Demo S.A.S.",
+      "servicio": "Carro taller",
+      "ciudades": [
+        "Bogotá",
+        "Chía"
+      ],
+      "frecuencia": "media",
+      "region": "Centro",
+      "lider_regional": "Líder Regional Centro",
+      "correo_aliado": "contacto@mecánica-demo.example",
+      "correo_lider": "lider.centro@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "643bcfcc7842fb84744ab69fa23304470e792b64aaabc8ad3e2294d12d6cdcb9"
+    },
+    {
+      "nit": "900111005-5",
+      "razon_social": "Llaves y Accesos Demo S.A.S.",
+      "servicio": "Cerrajería",
+      "ciudades": [
+        "Bogotá"
+      ],
+      "frecuencia": "media",
+      "region": "Centro",
+      "lider_regional": "Líder Regional Centro",
+      "correo_aliado": "contacto@llaves-demo.example",
+      "correo_lider": "lider.centro@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "806147302f6afebed68904f89d764d90674694f351cc920e6288a739d4e489a4"
+    },
+    {
+      "nit": "900111006-6",
+      "razon_social": "Conductores Seguros Demo S.A.S.",
+      "servicio": "Conductor elegido",
+      "ciudades": [
+        "Bogotá",
+        "Medellín",
+        "Cali"
+      ],
+      "frecuencia": "alta",
+      "region": "Nacional",
+      "lider_regional": "Líder Regional Centro",
+      "correo_aliado": "contacto@conductores-demo.example",
+      "correo_lider": "lider.nacional@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "1c2ccc1c92dcec0cecb39a6bac724ed6880d44df21549b3086b5f0a1c6c5256e"
+    },
+    {
+      "nit": "900111007-7",
+      "razon_social": "Grúas del Caribe Demo S.A.S.",
+      "servicio": "Grúa",
+      "ciudades": [
+        "Barranquilla",
+        "Cartagena"
+      ],
+      "frecuencia": "media",
+      "region": "Caribe",
+      "lider_regional": "Líder Regional Caribe",
+      "correo_aliado": "contacto@grúas-demo.example",
+      "correo_lider": "lider.caribe@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "d4769399cf7ff7d91f605abd125788ec1b578f58af121a9cebef1eb39636e912"
+    },
+    {
+      "nit": "900111008-8",
+      "razon_social": "Asistencia Santander Demo S.A.S.",
+      "servicio": "Grúa",
+      "ciudades": [
+        "Bucaramanga"
+      ],
+      "frecuencia": "baja",
+      "region": "Oriente",
+      "lider_regional": "Líder Regional Oriente",
+      "correo_aliado": "contacto@asistencia-demo.example",
+      "correo_lider": "lider.oriente@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "668ba204fa8aecea65e36a4ab269da405ee7dba54e12d17555e7e30c5d573653"
+    },
+    {
+      "nit": "900111009-9",
+      "razon_social": "Cerrajería Antioquia Demo S.A.S.",
+      "servicio": "Cerrajería",
+      "ciudades": [
+        "Medellín"
+      ],
+      "frecuencia": "baja",
+      "region": "Antioquia",
+      "lider_regional": "Líder Regional Antioquia",
+      "correo_aliado": "contacto@cerrajería-demo.example",
+      "correo_lider": "lider.antioquia@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "7ef922d7bf4eb20e467d1bf8779ecae3b2a721caf2815a0d0777c3059561eecd"
+    },
+    {
+      "nit": "900111010-0",
+      "razon_social": "Transportes Eje Demo S.A.S.",
+      "servicio": "Transporte",
+      "ciudades": [
+        "Pereira",
+        "Manizales"
+      ],
+      "frecuencia": "media",
+      "region": "Eje Cafetero",
+      "lider_regional": "Líder Regional Occidente",
+      "correo_aliado": "contacto@transportes-demo.example",
+      "correo_lider": "lider.ejecafetero@ejemplo-empresa.example",
+      "estado": "activo",
+      "codigo_acceso_sha256": "36135a3b633e95f8464b6398ffd716c711353853fd3f50634492e94f58857223"
+    }
+  ]
+}

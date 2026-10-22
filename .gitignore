@@ -1,0 +1,8 @@
+# Nunca subir llaves ni datos reales sin control
+.env
+*.key
+secretos/
+data/privado/
+node_modules/
+.DS_Store
+Thumbs.db

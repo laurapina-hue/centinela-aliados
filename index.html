@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Centinela de Aliados</title>
+  <meta name="description" content="Tablero de indicadores y agente de IA para la red de aliados de asistencia Autos">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e9b100'/%3E%3Cpath d='M16 6l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z' fill='%230b5a3c'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="app">
+  <!-- ============ NAVEGACIÓN ============ -->
+  <aside class="lateral">
+    <div class="marca">
+      <div class="marca-icono"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.4 8.3-8 9.5C7.4 20.3 4 17 4 12V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>Centinela</b><small>Red de aliados · Autos</small></div>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-vista="resumen" class="activo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Resumen</button>
+      <button data-vista="evolucion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Evolución</button>
+      <button data-vista="aliados"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.5a3.5 3.5 0 010 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"/></svg>Aliados</button>
+      <button data-vista="matriz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg>Matriz de calidad</button>
+      <button data-vista="agente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>Agente IA</button>
+      <button data-vista="reportes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>Reportes</button>
+      <button data-vista="config"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>Configuración</button>
+    </nav>
+    <div class="lateral-pie">
+      <div class="estado-ia"><span class="punto" id="punto-ia"></span><span id="txt-ia">IA sin configurar</span></div>
+      <div id="txt-origen" style="margin-top:6px"></div>
+      <a href="portal.html" style="color:#fff;display:inline-block;margin-top:10px">Portal de aliados →</a>
+    </div>
+  </aside>
+
+  <!-- ============ PRINCIPAL ============ -->
+  <main class="principal">
+    <header class="barra">
+      <div>
+        <h1 id="titulo-vista">Resumen de la red</h1>
+        <div class="sub" id="sub-vista">Cargando datos…</div>
+      </div>
+      <div class="filtros no-imprimir">
+        <select id="f-semana" aria-label="Semana"></select>
+        <select id="f-region" aria-label="Región"><option value="">Todas las regiones</option></select>
+        <select id="f-servicio" aria-label="Servicio"><option value="">Todos los servicios</option></select>
+        <select id="f-frecuencia" aria-label="Frecuencia"><option value="">Toda frecuencia</option><option value="alta">Frecuencia alta</option><option value="media">Frecuencia media</option><option value="baja">Frecuencia baja</option></select>
+        <button class="btn peque" id="btn-recargar" title="Recargar datos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>Actualizar</button>
+      </div>
+    </header>
+
+    <div class="contenido">
+      <!-- ===== RESUMEN ===== -->
+      <section class="vista activa" id="v-resumen">
+        <div class="kpis" id="kpis"></div>
+        <div class="rejilla r-3-1">
+          <div class="tarjeta">
+            <div class="tarjeta-cab"><div><h2>Alertas priorizadas</h2><p class="desc" style="margin:0">Ordenadas por severidad × frecuencia del aliado</p></div>
+              <select id="f-sev" class="peque"><option value="">Todas</option><option value="Crítica">Críticas</option><option value="Alta">Altas</option><option value="Media">Medias</option><option value="Informativa">Informativas</option></select></div>
+            <div class="alertas" id="lista-alertas"></div>
+          </div>
+          <div class="tarjeta">
+            <h2>Índice de desempeño de la red</h2>
+            <p class="desc">IDA ponderado (0–100) y categoría ANS</p>
+            <div style="display:flex;align-items:baseline;gap:10px"><span class="ida-grande num" id="ida-red">—</span><span id="cat-red"></span></div>
+            <div class="grafico bajo" style="margin-top:12px"><canvas id="g-ida"></canvas></div>
+            <h2 style="margin-top:14px">Aliados por categoría</h2>
+            <div id="dist-cat" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
+          </div>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-cab"><div><h2>Ranking de aliados</h2><p class="desc" style="margin:0">Semáforo por indicador en la semana seleccionada. Clic para ver el expediente.</p></div></div>
+          <div class="tabla-wrap"><table id="t-ranking"></table></div>
+        </div>
+      </section>
+
+      <!-- ===== EVOLUCIÓN ===== -->
+      <section class="vista" id="v-evolucion">
+        <div class="tarjeta">
+          <div class="tarjeta-cab">
+            <div><h2 id="ev-titulo">Evolución semana a semana</h2><p class="desc" style="margin:0">Línea de la red, aliado seleccionado, meta y umbral</p></div>
+            <div class="filtros"><select id="ev-ind"></select><select id="ev-aliado"><option value="">Comparar con un aliado…</option></select><select id="ev-n"><option value="8">8 semanas</option><option value="12" selected>12 semanas</option><option value="52">Todo</option></select></div>
+          </div>
+          <div class="grafico"><canvas id="g-evol"></canvas></div>
+        </div>
+        <div class="tarjeta">
+          <h2>Mapa de calor por aliado</h2>
+          <p class="desc">Valor del indicador seleccionado por semana, coloreado según la meta. Clic en un aliado para su expediente.</p>
+          <div class="tabla-wrap"><table class="mapa" id="t-mapa"></table></div>
+        </div>
+      </section>
+
+      <!-- ===== ALIADOS / EXPEDIENTE ===== -->
+      <section class="vista" id="v-aliados">
+        <div class="tarjeta">
+          <div class="tarjeta-cab"><div><h2>Expediente del aliado</h2><p class="desc" style="margin:0">Datos maestros, desempeño, matriz de calidad y medida sugerida</p></div>
+            <div class="filtros"><select id="exp-aliado"></select><button class="btn peque" id="exp-informe">Generar expediente</button><button class="btn peque primario" id="exp-ia">Analizar con IA</button></div></div>
+          <div id="exp-cuerpo"></div>
+        </div>
+        <div class="rejilla r-2">
+          <div class="tarjeta"><h2>Evolución del IDA</h2><div class="grafico bajo"><canvas id="g-exp-ida"></canvas></div></div>
+          <div class="tarjeta"><h2>Indicadores (últimas 8 semanas)</h2><div class="tabla-wrap"><table class="mapa" id="t-exp-mapa"></table></div></div>
+        </div>
+        <div class="tarjeta"><h2>Novedades en matriz de calidad (ventana de escalamiento)</h2><div class="tabla-wrap"><table id="t-exp-incs"></table></div></div>
+      </section>
+
+      <!-- ===== MATRIZ ===== -->
+      <section class="vista" id="v-matriz">
+        <div class="rejilla r-2">
+          <div class="tarjeta"><h2>Incumplimientos por tipo</h2><p class="desc" id="mz-desc"></p><div class="grafico bajo"><canvas id="g-mz-tipo"></canvas></div></div>
+          <div class="tarjeta"><h2>Tendencia semanal por gravedad</h2><p class="desc">Conteo de novedades tipificadas</p><div class="grafico bajo"><canvas id="g-mz-sem"></canvas></div></div>
+        </div>
+        <div class="tarjeta">
+          <div class="tarjeta-cab"><div><h2>Bitácora de novedades</h2><p class="desc" style="margin:0">Registros tipificados en la matriz de calidad</p></div>
+            <div class="filtros"><select id="mz-periodo"><option value="1">Semana seleccionada</option><option value="4" selected>Últimas 4 semanas</option><option value="13">Últimas 13 semanas</option></select>
+              <select id="mz-grav"><option value="">Toda gravedad</option><option value="critica">Crítica</option><option value="grave">Grave</option><option value="leve">Leve</option></select>
+              <button class="btn peque" id="mz-csv">Descargar CSV</button></div></div>
+          <div class="tabla-wrap"><table id="t-matriz"></table></div>
+        </div>
+      </section>
+
+      <!-- ===== AGENTE ===== -->
+      <section class="vista" id="v-agente">
+        <div class="tarjeta chat">
+          <div class="tarjeta-cab"><div><h2>Centinela · agente de IA</h2><p class="desc" style="margin:0">Responde solo con los datos del tablero (semana y filtros seleccionados). Propone; no decide.</p></div>
+            <button class="btn peque" id="chat-limpiar">Nueva conversación</button></div>
+          <div class="chat-atajos" id="chat-atajos"></div>
+          <div class="chat-mensajes" id="chat-mensajes" aria-live="polite"></div>
+          <div class="chat-entrada">
+            <textarea id="chat-txt" rows="2" placeholder="Pregunta sobre indicadores, aliados, alertas o pide un entregable… (Enter para enviar, Shift+Enter nueva línea)"></textarea>
+            <button class="btn primario" id="chat-enviar">Enviar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== REPORTES ===== -->
+      <section class="vista" id="v-reportes">
+        <div class="reportes">
+          <div class="tarjeta reporte"><h2>Reporte semanal · equipo</h2><p>Semáforo de red, alertas priorizadas, ranking y accionables. Para enviar cada lunes a líderes regionales y supervisores.</p>
+            <div class="acciones"><button class="btn peque primario" data-rep="semanal">Generar</button></div></div>
+          <div class="tarjeta reporte"><h2>Informe mensual · aliado</h2><p>Resultados del mes de un aliado vs. meta y promedio anónimo de la red. Uno por aliado.</p>
+            <div class="fila-form"><select id="rep-mes"></select><select id="rep-aliado"></select></div>
+            <div class="acciones"><button class="btn peque primario" data-rep="mensual">Generar</button><button class="btn peque" data-rep="mensual-todos">Todos los aliados (un archivo)</button></div></div>
+          <div class="tarjeta reporte"><h2>Presentación · comité</h2><p>Siete diapositivas 16:9 con mensaje clave, resultados, evolución, categorías, riesgos y plan de acción. Imprime como PDF.</p>
+            <div class="acciones"><button class="btn peque primario" data-rep="presentacion">Generar</button></div></div>
+          <div class="tarjeta reporte"><h2>Expediente y propuesta de medida</h2><p>Expediente del aliado seleccionado con mapa de calor, matriz de 90 días y propuesta según escalamiento.</p>
+            <div class="fila-form"><select id="rep-exp-aliado"></select></div>
+            <div class="acciones"><button class="btn peque primario" data-rep="expediente">Generar</button></div></div>
+          <div class="tarjeta reporte"><h2>Exportar datos</h2><p>Descargas en CSV (separador ;) para Excel o Google Sheets.</p>
+            <div class="acciones"><button class="btn peque" data-csv="indicadores">Indicadores por aliado</button><button class="btn peque" data-csv="alertas">Alertas</button><button class="btn peque" data-csv="bitacora">Bitácora</button></div></div>
+        </div>
+        <div class="tarjeta oculto" id="rep-visor">
+          <div class="tarjeta-cab"><div><h2 id="rep-titulo">Vista previa</h2><p class="desc" style="margin:0" id="rep-desc"></p></div>
+            <div class="filtros">
+              <button class="btn peque" id="rep-ia">✨ Agregar lectura del agente</button>
+              <button class="btn peque" id="rep-copiar">Copiar para correo</button>
+              <button class="btn peque" id="rep-correo">Abrir en correo</button>
+              <button class="btn peque" id="rep-descargar">Descargar HTML</button>
+              <button class="btn peque primario" id="rep-imprimir">Imprimir / PDF</button>
+            </div></div>
+          <div class="vista-previa"><iframe id="rep-frame" title="Vista previa del reporte"></iframe></div>
+        </div>
+      </section>
+
+      <!-- ===== CONFIGURACIÓN ===== -->
+      <section class="vista" id="v-config">
+        <div class="tarjeta">
+          <h2>Conexión con Gemini</h2>
+          <p class="desc">Crea una API key gratuita en <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. La key se guarda solo en este navegador.</p>
+          <div class="form">
+            <label>API key de Gemini<input type="password" id="cfg-key" autocomplete="off" placeholder="AIza…"></label>
+            <label><span><input type="checkbox" id="cfg-recordar"> Recordar en este navegador</span><small>Si no la marcas, la key se borra al cerrar la pestaña.</small></label>
+            <div class="fila-form">
+              <label>Modelo<input type="text" id="cfg-modelo" list="lista-modelos"><datalist id="lista-modelos"></datalist></label>
+              <label>Temperatura<input type="text" id="cfg-temp" inputmode="decimal"><small>0,0–1,0 · baja = más precisa</small></label>
+            </div>
+            <div class="fila-form" style="flex:0"><button class="btn primario" id="cfg-guardar">Guardar</button><button class="btn" id="cfg-probar">Probar conexión</button><button class="btn" id="cfg-detectar">Detectar modelos</button><button class="btn" id="cfg-borrar">Borrar key</button></div>
+            <div class="aviso"><b>Privacidad:</b> en la capa gratuita, Google puede usar el contenido enviado para mejorar sus productos. No envíes datos personales de asegurados; usa la capa de pago o datos anonimizados para información sensible.</div>
+          </div>
+        </div>
+        <div class="tarjeta">
+          <h2>Fuentes de datos</h2>
+          <p class="desc">Por defecto se leen los archivos de la carpeta <code>data/</code>. Puedes cargar archivos para esta sesión o conectar una fuente en línea.</p>
+          <div class="form">
+            <div class="fila-form">
+              <label>Indicadores semanales (CSV)<input type="file" id="up-ind" accept=".csv,text/csv"></label>
+              <label>Incumplimientos matriz (CSV)<input type="file" id="up-inc" accept=".csv,text/csv"></label>
+            </div>
+            <div class="fila-form">
+              <label>Proveedores (JSON)<input type="file" id="up-prov" accept=".json,application/json"></label>
+              <label>Metas (JSON)<input type="file" id="up-metas" accept=".json,application/json"></label>
+            </div>
+            <label>URL en línea · indicadores (CSV)<input type="url" id="cfg-url-ind" placeholder="https://… (Google Sheets publicado como CSV o Apps Script)"></label>
+            <label>URL en línea · incumplimientos (CSV)<input type="url" id="cfg-url-inc" placeholder="https://…"></label>
+            <label>Actualización automática<select id="cfg-refresco"><option value="0">Desactivada</option><option value="5">Cada 5 minutos</option><option value="15">Cada 15 minutos</option><option value="60">Cada hora</option></select></label>
+            <div class="fila-form" style="flex:0"><button class="btn primario" id="cfg-fuentes">Aplicar fuentes</button><button class="btn" id="cfg-restablecer">Volver a datos del repositorio</button></div>
+            <div class="origen" id="cfg-origen"></div>
+            <div class="aviso info">Una hoja de Google publicada en la web es accesible para cualquiera que tenga el enlace. Para datos reales usa la opción con Apps Script descrita en <code>docs/GUIA_DESPLIEGUE.md</code>.</div>
+          </div>
+        </div>
+        <div class="tarjeta">
+          <h2>Contexto del agente</h2>
+          <p class="desc">Archivos de la carpeta <code>contexto/</code> que el agente lee en cada consulta. Edítalos en GitHub para ajustar su conocimiento.</p>
+          <div id="cfg-contexto" class="tabla-wrap"></div>
+          <div class="fila-form" style="margin-top:10px"><button class="btn peque" id="cfg-ver-prompt">Ver instrucción completa enviada a Gemini</button></div>
+          <pre id="cfg-prompt" class="oculto" style="white-space:pre-wrap;max-height:420px;overflow:auto;background:var(--panel-2);padding:12px;border-radius:8px;font-size:12px"></pre>
+        </div>
+        <div class="tarjeta">
+          <h2>Apariencia</h2>
+          <div class="fila-form"><select id="cfg-tema"><option value="">Automático</option><option value="light">Claro</option><option value="dark">Oscuro</option></select></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<!-- Librerías locales (sin dependencias de CDN) -->
+<script src="js/vendor/chart.umd.min.js"></script>
+<script src="js/vendor/marked.min.js"></script>
+<script src="js/vendor/purify.min.js"></script>
+<!-- Copia embebida de datos y contexto (para abrir con doble clic sin servidor) -->
+<script src="js/embebido.js"></script>
+<script src="js/config.js"></script>
+<script src="js/datos.js"></script>
+<script src="js/motor.js"></script>
+<script src="js/gemini.js"></script>
+<script src="js/agente.js"></script>
+<script src="js/reportes.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

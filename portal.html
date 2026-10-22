@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal de Aliados</title>
+  <meta name="description" content="Consulta de resultados de desempeño para aliados de asistencia Autos">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e9b100'/%3E%3Cpath d='M16 6l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z' fill='%230b5a3c'/%3E%3C/svg%3E">
+</head>
+<body>
+  <!-- ===== Ingreso ===== -->
+  <div class="portal-login" id="login">
+    <div class="tarjeta">
+      <div class="marca" style="padding:0;margin-bottom:18px">
+        <div class="marca-icono"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.4 8.3-8 9.5C7.4 20.3 4 17 4 12V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div><b>Portal de Aliados</b><small style="color:var(--ink-3)">Resultados de desempeño · Asistencia Autos</small></div>
+      </div>
+      <form class="form" id="f-login" autocomplete="off">
+        <label>NIT de la empresa<input type="text" id="l-nit" placeholder="900111001-1" required></label>
+        <label>Código de acceso<input type="password" id="l-cod" required></label>
+        <button class="btn primario" type="submit">Ingresar</button>
+        <div class="aviso oculto" id="l-error"></div>
+        <p class="origen">Si no tienes código, solicítalo a tu líder regional.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Tablero del aliado ===== -->
+  <div id="tablero" class="oculto">
+    <header class="portal-cab">
+      <div><div style="font-size:12px;opacity:.8">Portal de Aliados</div><h1 id="p-nombre" style="font-size:20px"></h1><div id="p-sub" style="font-size:13px;opacity:.85"></div></div>
+      <div class="filtros"><select id="p-semana" aria-label="Semana"></select><button class="btn peque" id="p-salir">Salir</button></div>
+    </header>
+    <div class="contenido" style="max-width:1200px;margin:0 auto;width:100%">
+      <div class="rejilla r-3-1">
+        <div class="tarjeta">
+          <h2>Su índice de desempeño</h2><p class="desc">IDA de 0 a 100 según el cumplimiento de metas del ANS</p>
+          <div style="display:flex;gap:12px;align-items:baseline"><span class="ida-grande num" id="p-ida">—</span><span id="p-cat"></span></div>
+          <div class="grafico bajo" style="margin-top:12px"><canvas id="pg-ida"></canvas></div>
+        </div>
+        <div class="tarjeta">
+          <h2>Novedades en matriz de calidad</h2><p class="desc" id="p-mz-desc"></p>
+          <div id="p-mz"></div>
+        </div>
+      </div>
+      <div class="kpis" id="p-kpis"></div>
+      <div class="tarjeta">
+        <h2>Evolución semana a semana</h2>
+        <p class="desc">Su resultado frente a la meta. El promedio de la red es anónimo.</p>
+        <div class="filtros" style="margin-bottom:10px"><select id="p-ind"></select></div>
+        <div class="grafico"><canvas id="pg-evol"></canvas></div>
+      </div>
+      <div class="tarjeta">
+        <h2>Detalle de novedades (últimas 4 semanas)</h2>
+        <div class="tabla-wrap"><table id="p-tabla"></table></div>
+      </div>
+      <p class="origen">Información confidencial de uso exclusivo del aliado. Para aclaraciones contacte a su líder regional.</p>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script src="js/vendor/chart.umd.min.js"></script>
+  <script src="js/embebido.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/datos.js"></script>
+  <script src="js/motor.js"></script>
+  <script src="js/reportes.js"></script>
+  <script src="js/portal.js"></script>
+</body>
+</html>
