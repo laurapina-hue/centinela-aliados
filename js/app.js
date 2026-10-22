@@ -409,11 +409,11 @@
     $("#cfg-modelo").value = seleccionado;
   }
   /** Prefiere un modelo "flash" estable (no preview ni experimental), el de versión más alta */
-  function mejorModelo(ms) {
-    const ver = m => parseFloat((m.match(/gemini-(\d+(\.\d+)?)/) || [])[1] || 0);
-    const puntaje = m => (/flash/.test(m) ? 100 : 0) - (/lite/.test(m) ? 10 : 0) - (/preview|exp|latest|\d{3,}/.test(m) ? 50 : 0) + ver(m);
-    return [...ms].sort((a, b) => puntaje(b) - puntaje(a))[0];
+  function puntajeModelo(m) {
+    const ver = parseFloat((m.match(/gemini-(\d+(\.\d+)?)/) || [])[1] || 0);
+    return (/flash/.test(m) ? 100 : 0) - (/lite/.test(m) ? 10 : 0) - (/preview|exp|latest|\d{3,}/.test(m) ? 50 : 0) + ver;
   }
+  function mejorModelo(ms) { return [...ms].sort((a, b) => puntajeModelo(b) - puntajeModelo(a))[0]; }
 
   function vConfig() {
     $("#cfg-key").value = cfg.apiKey || "";
@@ -495,12 +495,29 @@
       leerFormIA();
       if (!cfg.apiKey) { estadoIA("Primero pega tu API key.", "error"); return; }
       const b = $("#cfg-probar"); b.disabled = true;
-      estadoIA(`Probando conexión con ${cfg.modelo}…`);
+      const probar = m => Gemini.generar({ apiKey: cfg.apiKey, modelo: m, sistema: "Responde solo con la palabra: listo", mensajes: [{ rol: "yo", texto: "Prueba" }], maxTokens: 1024 });
       try {
-        await Gemini.generar({ apiKey: cfg.apiKey, modelo: cfg.modelo, sistema: "Responde solo con la palabra: listo", mensajes: [{ rol: "yo", texto: "Prueba" }], maxTokens: 1024 });
+        estadoIA(`Probando conexión con ${esc(cfg.modelo)}…`);
+        try {
+          await probar(cfg.modelo);
+        } catch (e) {
+          if (e.status !== 404 && e.status !== 403) throw e;
+          // El modelo elegido no responde: se prueban los demás modelos disponibles para la clave
+          let lista = Almacen.get("modelosDetectados", null);
+          if (!lista) { lista = await Gemini.listarModelos(cfg.apiKey); Almacen.set("modelosDetectados", lista); }
+          const candidatos = [...lista].sort((a, c) => puntajeModelo(c) - puntajeModelo(a)).filter(m => m !== cfg.modelo).slice(0, 8);
+          let ok = null, ultimo = e;
+          for (const m of candidatos) {
+            estadoIA(`${esc(cfg.modelo)} no respondió. Probando ${esc(m)}…`);
+            try { await probar(m); ok = m; break; } catch (e2) { ultimo = e2; if (e2.status === 400 || e2.status === 429) break; }
+          }
+          if (!ok) throw ultimo;
+          cfg.modelo = ok;
+          llenarModelos(lista, ok);
+        }
         guardarConfig(cfg); actualizarEstadoIA();
-        estadoIA(`✅ Conexión correcta con ${cfg.modelo}. La configuración quedó guardada; ya puedes usar el Agente IA.`, "ok");
-      } catch (e) { estadoIA("❌ " + e.message, "error"); }
+        estadoIA(`✅ Conexión correcta con <b>${esc(cfg.modelo)}</b>. La configuración quedó guardada; ya puedes usar el Agente IA.`, "ok");
+      } catch (e) { estadoIA("❌ " + esc(e.message), "error"); }
       finally { b.disabled = false; }
     });
     $("#cfg-detectar").addEventListener("click", async () => {
